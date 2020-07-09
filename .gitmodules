@@ -1,0 +1,6 @@
+[submodule "nclink"]
+	path = nclink
+	url = git@github.com:FIUS/nextcloud-link-generator.git
+[submodule "PythonTelegramWraper"]
+	path = PythonTelegramWraper
+	url = git@github.com:TheMrPhantom/PythonTelegramWraper.git
