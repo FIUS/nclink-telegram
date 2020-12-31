@@ -52,7 +52,15 @@ class Main:
 
             nc = Nextcloud(config.url,
                            config.user, config.password, config.base_dir)
-            msg = update.message.text.split()[1:]
+            
+            incoming_message=update.message.text
+            msg = []
+            if ";" in incoming_message:
+                msg = incoming_message.split()[1:]
+            else:
+                first_space=incoming_message.find(" ")
+                msg=incoming_message[first_space+1:]
+                msg = msg.split(";")
 
             BotWrapper.sendMessage(
                 chatID, "Started searching for "+str(msg))
