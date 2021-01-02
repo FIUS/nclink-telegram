@@ -17,7 +17,7 @@ def resolveTicket(ticket_number, links):
     formated_links = ""
 
     for link in links:
-        formated_links = "  - "+link+"\n"
+        formated_links += "  - "+link+"\n"
 
     message_body = config.message_template_beginning
     message_body = message_body+"\n"+formated_links
@@ -42,4 +42,4 @@ def resolveTicket(ticket_number, links):
     return is_sended
 
 # Example
-# resolveTicket(135, "Datawarehouse, OLAP und Data-Mining: https://nextcloud.stuvus.uni-stuttgart.de/s/4qFp7rYyGemda2Z\nImplementierung von Datenbanken und Informationssystemen https://nextcloud.stuvus.uni-stuttgart.de/s/KLLKqZrTffLBpHq")
+# resolveTicket(135, ["Datawarehouse, OLAP und Data-Mining: https://nextcloud.stuvus.uni-stuttgart.de/s/4qFp7rYyGemda2Z","Implementierung von Datenbanken und Informationssystemen https://nextcloud.stuvus.uni-stuttgart.de/s/KLLKqZrTffLBpHq"])

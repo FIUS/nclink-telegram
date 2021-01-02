@@ -1,0 +1,23 @@
+username = "vnachname"
+password = "passw0rt"
+sender = "vorname.nachname@fius.informatik.uni-stuttgart.de"
+targets = ['verleih@fius.informatik.uni-stuttgart.de']
+
+message_template_beginning="""
+Hi,
+
+folgend die Links zu den Altprüfungen, die wir zu deinen angefragten Prüfungen im Moment haben. Bitte denk daran, dass diese nur 7 Tage lang gültig sind (=> davor runterladen).
+"""
+
+message_template_ending="""
+Du darfst die Materialien auch gerne an deine Kommilitonen*innen weitergeben, aber nicht online auf irgendeiner Plattform veröffentlichen. 
+
+Um immer die aktuellsten Altprüfungen allen Studierenden bereitstellen zu können, wäre es nett, wenn du nach deiner Prüfung die Prüfer*innen um ein unausgefülltes Exemplar für uns bitten könntest, oder ein Protokoll der Prüfung anfertigen könntest, und uns dieses zukommen lässt. 
+
+Bei weiteren Fragen, oder wenn etwas nicht funktioniert, schreibe uns gerne nochmal.
+
+Viel Glück bei deinen Prüfungen  
+
+Viele Grüße
+Deine Fachgruppe Informatik ;)
+"""
