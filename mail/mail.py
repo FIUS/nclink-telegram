@@ -7,7 +7,7 @@ import mail.config as config
 def resolveTicket(ticket_number, links):
     
     is_sended=False
-    smtp_ssl_host = 'smtp.stuvus.uni-stuttgart.de'  # smtp.mail.yahoo.com
+    smtp_ssl_host = 'smtp.stuvus.uni-stuttgart.de'
     smtp_ssl_port = 587
     username = config.username
     password = config.password
