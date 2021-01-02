@@ -2,6 +2,7 @@ from nclink.utilities import Nextcloud
 from nclink.utilities import Helper
 import nclink.config as config
 import PythonTelegramWraper.bot as BotWrapper
+import mail.mail as mail
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
 from telegram import ReplyKeyboardMarkup
@@ -34,7 +35,7 @@ class Main:
         chatID = BotWrapper.chatID(update)
         try:
             BotWrapper.getBot().delete_message(chat_id=update.effective_chat.id,
-                                    message_id=update.effective_message.message_id)
+                                               message_id=update.effective_message.message_id)
         except Exception as e:
             print(e)
         inp = str(update.callback_query.data)
@@ -52,14 +53,14 @@ class Main:
 
             nc = Nextcloud(config.url,
                            config.user, config.password, config.base_dir)
-            
-            incoming_message=update.message.text
+
+            incoming_message = update.message.text
             msg = []
             if ";" in incoming_message:
                 msg = incoming_message.split()[1:]
             else:
-                first_space=incoming_message.find(" ")
-                msg=incoming_message[first_space+1:]
+                first_space = incoming_message.find(" ")
+                msg = incoming_message[first_space+1:]
                 msg = msg.split(";")
 
             BotWrapper.sendMessage(
@@ -69,14 +70,34 @@ class Main:
 
             for exam in exams:
 
-                BotWrapper.sendMessage(chatID, str(exam)+": " + str(exams[exam][0]), isHTML=True,no_web_page_preview=True)
+                BotWrapper.sendMessage(chatID, str(
+                    exam)+": " + str(exams[exam][0]), isHTML=True, no_web_page_preview=True)
+
+    def resolve(self, update, context):
+        chatID = BotWrapper.chatID(update)
+
+        if str(chatID) in BotWrapper.getUserData():
+            message_lines = update.message.text.split("\n")
+            ticket_number = int(message_lines[0].split()[1])
+            links = message_lines[1:]
+
+            was_resolved=mail.resolveTicket(ticket_number, links)
+
+            if was_resolved:
+                BotWrapper.sendMessage(chatID,"Ticket "+str(ticket_number)+ " has been resolved")
+            else:
+                BotWrapper.sendMessage(chatID,"An error occured")
+
+
 
 
 main = Main()
 
 BotWrapper.addBotCommand("request", main.request)
 BotWrapper.addBotCommand("admin", main.admin)
+BotWrapper.addBotCommand("resolve", main.resolve)
 BotWrapper.botBackend.dispatcher.add_handler(
     CallbackQueryHandler(main.adminResponse))
 
 BotWrapper.startBot()
+
