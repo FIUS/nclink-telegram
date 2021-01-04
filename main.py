@@ -56,7 +56,7 @@ class Main:
 
             incoming_message = update.message.text
             msg = []
-            if ";" in incoming_message:
+            if ";" not in incoming_message:
                 msg = incoming_message.split()[1:]
             else:
                 first_space = incoming_message.find(" ")
