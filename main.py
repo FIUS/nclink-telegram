@@ -55,6 +55,7 @@ class Main:
                            config.user, config.password, config.base_dir)
 
             incoming_message = update.message.text
+            print("message from;",str(chatID),"->",incoming_message)
             msg = []
             if ";" not in incoming_message:
                 msg = incoming_message.split()[1:]
