@@ -24,7 +24,7 @@ def resolveTicket(ticket_number, links):
     message_body = message_body+"\n"+config.message_template_ending
 
     msg = MIMEText(message_body)
-    msg['Subject'] = '['+str(ticket_number)+']'
+    msg['Subject'] = '[FIUSPV-'+str(ticket_number)+']'
     msg['From'] = sender
     msg['To'] = targets[0]
 
