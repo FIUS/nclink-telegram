@@ -14,7 +14,8 @@ from telegram.ext import CallbackQueryHandler
 class Main:
 
     def __init__(self):
-        self.nc = Nextcloud(config.url,config.user, config.password, config.base_dir)
+        self.nc = Nextcloud(config.url,config.user, config.password, config.base_dir)#
+        self.stats={}
 
     def admin(self, update, context):
         user = update.message.from_user
@@ -49,8 +50,10 @@ class Main:
     def request(self, update, context):
         chatID = BotWrapper.chatID(update)
 
-        if str(chatID) in BotWrapper.getUserData(): 
+        if str(chatID) in BotWrapper.getUserData():
 
+            self.increase_stat_count('Requests: ')
+            
             incoming_message = update.message.text
             print("message from:",str(chatID),"->",incoming_message)
             
@@ -73,8 +76,12 @@ class Main:
 
             exams,cached,fetched = self.nc.get_links(msg)
 
-            for exam in exams:
+            self.increase_stat_count("Exam Links generated: ",len(exams))
+            self.increase_stat_count("Cached Links: ",cached)
+            self.increase_stat_count("Non-Cached Links: ",fetched)
 
+            for exam in exams:
+                self.increase_stat_count(str(exam)+": ")
                 BotWrapper.sendMessage(chatID, str(
                     exam)+": " + str(exams[exam][0]), isHTML=True, no_web_page_preview=True)
             
@@ -91,11 +98,28 @@ class Main:
             was_resolved=mail.resolveTicket(ticket_number, links)
 
             if was_resolved:
+                self.increase_stat_count("Resolved with Bot: ")
                 BotWrapper.sendMessage(chatID,"Ticket "+str(ticket_number)+ " has been resolved")
             else:
                 BotWrapper.sendMessage(chatID,"An error occured")
 
+    def statistics(self, update, context):
+        chatID = BotWrapper.chatID(update)
+        if str(chatID) in BotWrapper.getUserData():
 
+            message=""
+
+            for key in self.stats:
+                message+=str(key)+str(self.stats[key])+"\n"
+
+            BotWrapper.sendMessage(chatID,message,isHTML=True)
+
+
+    def increase_stat_count(self,stat,amount=1):
+        if stat in self.stats:
+            self.stats[stat]=self.stats[stat]+amount
+        else:
+            self.stats[stat]=amount
 
 
 main = Main()
@@ -104,6 +128,8 @@ BotWrapper.addBotCommand("request", main.request)
 BotWrapper.addBotCommand("r", main.request)
 BotWrapper.addBotCommand("admin", main.admin)
 BotWrapper.addBotCommand("resolve", main.resolve)
+BotWrapper.addBotCommand("stats", main.statistics)
+
 BotWrapper.botBackend.dispatcher.add_handler(
     CallbackQueryHandler(main.adminResponse))
 
