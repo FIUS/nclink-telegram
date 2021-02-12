@@ -65,12 +65,14 @@ class Main:
             BotWrapper.sendMessage(
                 chatID, "Started searching for "+str(msg))
 
-            exams = self.nc.get_links(msg)
+            exams,cached,fetched = self.nc.get_links(msg)
 
             for exam in exams:
 
                 BotWrapper.sendMessage(chatID, str(
                     exam)+": " + str(exams[exam][0]), isHTML=True, no_web_page_preview=True)
+            
+            BotWrapper.sendMessage(chatID, "Cached Links: "+str(cached)+"\nNew Links: "+str(fetched), isHTML=True, no_web_page_preview=True)
 
     def resolve(self, update, context):
         chatID = BotWrapper.chatID(update)
