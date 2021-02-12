@@ -61,6 +61,11 @@ class Main:
                 first_space = incoming_message.find(" ")
                 msg = incoming_message[first_space+1:]
                 msg = msg.split(";")
+                                msgTemp=[]
+                for bad_string in msg:
+                    msgTemp.append(bad_string.strip())
+                
+                msg=msgTemp
 
             BotWrapper.sendMessage(
                 chatID, "Started searching for "+str(msg))
