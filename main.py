@@ -93,6 +93,7 @@ class Main:
 main = Main()
 
 BotWrapper.addBotCommand("request", main.request)
+BotWrapper.addBotCommand("r", main.request)
 BotWrapper.addBotCommand("admin", main.admin)
 BotWrapper.addBotCommand("resolve", main.resolve)
 BotWrapper.botBackend.dispatcher.add_handler(
