@@ -14,7 +14,7 @@ from telegram.ext import CallbackQueryHandler
 class Main:
 
     def __init__(self):
-        return
+        self.nc = Nextcloud(config.url,config.user, config.password, config.base_dir)
 
     def admin(self, update, context):
         user = update.message.from_user
@@ -49,13 +49,11 @@ class Main:
     def request(self, update, context):
         chatID = BotWrapper.chatID(update)
 
-        if str(chatID) in BotWrapper.getUserData():
-
-            nc = Nextcloud(config.url,
-                           config.user, config.password, config.base_dir)
+        if str(chatID) in BotWrapper.getUserData(): 
 
             incoming_message = update.message.text
-            print("message from;",str(chatID),"->",incoming_message)
+            print("message from:",str(chatID),"->",incoming_message)
+            
             msg = []
             if ";" not in incoming_message:
                 msg = incoming_message.split()[1:]
@@ -67,7 +65,7 @@ class Main:
             BotWrapper.sendMessage(
                 chatID, "Started searching for "+str(msg))
 
-            exams = nc.get_links(msg)
+            exams = self.nc.get_links(msg)
 
             for exam in exams:
 
