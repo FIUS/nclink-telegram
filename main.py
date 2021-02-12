@@ -61,7 +61,8 @@ class Main:
                 first_space = incoming_message.find(" ")
                 msg = incoming_message[first_space+1:]
                 msg = msg.split(";")
-                                msgTemp=[]
+                
+                msgTemp=[]
                 for bad_string in msg:
                     msgTemp.append(bad_string.strip())
                 
