@@ -3,6 +3,7 @@ from nclink.utilities import Helper
 import nclink.config as config
 import PythonTelegramWraper.bot as BotWrapper
 import mail.mail as mail
+import constants
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
 from telegram import ReplyKeyboardMarkup
@@ -117,6 +118,10 @@ class Main:
 
             BotWrapper.sendMessage(chatID,message,isHTML=True)
 
+    def help(self, update, context):
+        chatID = BotWrapper.chatID(update)
+        if str(chatID) in BotWrapper.getUserData():
+            BotWrapper.sendMessage(chatID,constants.help_message)
 
     def increase_stat_count(self,stat,amount=1):
         if stat in self.stats:
@@ -132,6 +137,7 @@ BotWrapper.addBotCommand("r", main.request)
 BotWrapper.addBotCommand("admin", main.admin)
 BotWrapper.addBotCommand("resolve", main.resolve)
 BotWrapper.addBotCommand("stats", main.statistics)
+BotWrapper.addBotCommand("help", main.help)
 
 BotWrapper.botBackend.dispatcher.add_handler(
     CallbackQueryHandler(main.adminResponse))
