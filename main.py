@@ -95,7 +95,10 @@ class Main:
             ticket_number = int(message_lines[0].split()[1])
             links = message_lines[1:]
 
-            was_resolved=mail.resolveTicket(ticket_number, links)
+            if "en" in message_lines[0]:
+                was_resolved=mail.resolveTicket(ticket_number, links, language="en")
+            else:
+                was_resolved=mail.resolveTicket(ticket_number, links)
 
             if was_resolved:
                 self.increase_stat_count("Resolved with Bot: ")

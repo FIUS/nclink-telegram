@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 import mail.config as config
 
 
-def resolveTicket(ticket_number, links):
+def resolveTicket(ticket_number, links, language="de"):
     
     is_sended=False
     smtp_ssl_host = 'smtp.stuvus.uni-stuttgart.de'
@@ -19,9 +19,17 @@ def resolveTicket(ticket_number, links):
     for link in links:
         formated_links += "  - "+link+"\n"
 
-    message_body = config.message_template_beginning
+    if language == "de":
+        message_body = config.message_template_beginning
+    elif language == "en":
+        message_body = config.message_template_beginning_english
+
     message_body = message_body+"\n"+formated_links
-    message_body = message_body+"\n"+config.message_template_ending
+
+    if language == "de":
+        message_body = message_body+"\n"+config.message_template_ending
+    elif language == "en":
+        message_body = message_body+"\n"+config.message_template_ending_english
 
     msg = MIMEText(message_body)
     msg['Subject'] = '[FIUSPV-'+str(ticket_number)+']'
