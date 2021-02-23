@@ -75,7 +75,7 @@ class Main:
             BotWrapper.sendMessage(
                 chatID, "Started searching for "+str(msg))
 
-            exams,cached,fetched = self.nc.get_links(msg)
+            exams,cached,fetched = self.nc.get_links(msg,8)
 
             self.increase_stat_count("Exam Links generated: ",len(exams))
             self.increase_stat_count("Cached Links: ",cached)
