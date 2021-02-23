@@ -78,7 +78,7 @@ class Main:
             def cache_callback_function(message):
                 BotWrapper.sendMessage(chatID, message)
 
-            exams,cached,fetched = self.nc.get_links(msg,10, cache_callback=cache_callback_function)
+            exams,cached,fetched = self.nc.get_links(msg,11, cache_callback=cache_callback_function)
 
             self.increase_stat_count("Exam Links generated: ",len(exams))
             self.increase_stat_count("Cached Links: ",cached)
