@@ -42,7 +42,7 @@ class Main:
             print(e)
         inp = str(update.callback_query.data)
         if inp is not "no":
-            BotWrapper.modifyUser(int(inp), True)
+            BotWrapper.modifyUser(int(inp), 'not_registred')
             BotWrapper.sendMessage(inp, "You have been accepted")
             BotWrapper.sendMessage(chatID, "Request has been accepted")
         else:
@@ -107,6 +107,13 @@ class Main:
             if was_resolved:
                 self.increase_stat_count("Resolved with Bot: ")
                 BotWrapper.sendMessage(chatID,"Ticket "+str(ticket_number)+ " has been resolved")
+                def cache_callback_function(message):
+                    BotWrapper.sendMessage(chatID, message)
+                if BotWrapper.getUserData()[str(chatID)] != "not_registred":
+                    drinks.order_drink(BotWrapper.getUserData()[str(chatID)],'Verleihticket',cache_callback_function)
+                else:
+                    BotWrapper.sendMessage(chatID, "Please register your username first with /username <username>")
+
             else:
                 BotWrapper.sendMessage(chatID,"An error occured")
 
@@ -137,7 +144,15 @@ class Main:
         if str(chatID) in BotWrapper.getUserData():
             def cache_callback_function(message):
                 BotWrapper.sendMessage(chatID, message)
-            drinks.order_drink('schieljn','Cola-Mix',cache_callback_function)
+            drinks.order_drink('schieljn','Verleihticket',cache_callback_function)
+    
+    def add_name(self, update, context):
+        chatID = BotWrapper.chatID(update)
+        if str(chatID) in BotWrapper.getUserData():
+            username=update.message.text.split(" ")[1]
+            BotWrapper.modifyUser(int(chatID), username)
+            
+            BotWrapper.sendMessage(chatID, "New username is: "+username)
 
 
 main = Main()
@@ -148,7 +163,7 @@ BotWrapper.addBotCommand("admin", main.admin)
 BotWrapper.addBotCommand("resolve", main.resolve)
 BotWrapper.addBotCommand("stats", main.statistics)
 BotWrapper.addBotCommand("help", main.help)
-BotWrapper.addBotCommand("drink", main.test_drink)
+BotWrapper.addBotCommand("username", main.add_name)
 
 BotWrapper.botBackend.dispatcher.add_handler(
     CallbackQueryHandler(main.adminResponse))
