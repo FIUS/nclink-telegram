@@ -1,6 +1,6 @@
 import requests
 import json
-import config
+from . import config
 
 def order_drink(user,drink,user_callback):
     r = requests.post(config.url + "/login", data={'password': config.password})
