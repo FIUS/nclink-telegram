@@ -10,7 +10,7 @@ from telegram import ReplyKeyboardMarkup
 from telegram import ReplyKeyboardRemove
 from telegram.ext.filters import Filters
 from telegram.ext import CallbackQueryHandler
-
+import drinklist.drinks as drinks
 
 class Main:
 
@@ -131,6 +131,13 @@ class Main:
             self.stats[stat]=self.stats[stat]+amount
         else:
             self.stats[stat]=amount
+    
+    def test_drink(self, update, context):
+        chatID = BotWrapper.chatID(update)
+        if str(chatID) in BotWrapper.getUserData():
+            def cache_callback_function(message):
+                BotWrapper.sendMessage(chatID, message)
+            drinks.order_drink('schieljn','Cola-Mix',cache_callback_function)
 
 
 main = Main()
@@ -141,6 +148,7 @@ BotWrapper.addBotCommand("admin", main.admin)
 BotWrapper.addBotCommand("resolve", main.resolve)
 BotWrapper.addBotCommand("stats", main.statistics)
 BotWrapper.addBotCommand("help", main.help)
+BotWrapper.addBotCommand("drink", main.test_drink)
 
 BotWrapper.botBackend.dispatcher.add_handler(
     CallbackQueryHandler(main.adminResponse))
